@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { AppBar, Box, Button, IconButton, Toolbar, Typography } from '@mui/material';
 import CreateIcon from '@mui/icons-material/Create';
 import { sx } from '@/shared/lib';
@@ -23,6 +24,7 @@ const styles = sx({
     alignItems: 'center',
     gap: 1.5,
     minWidth: 0,
+    cursor: 'pointer',
   },
   logo: {
     width: 36,
@@ -64,6 +66,7 @@ type HeaderViewProps = {
 };
 
 export const HeaderView = ({ isDashboardActive, dashboardPath, createQuizPath }: HeaderViewProps) => {
+  const router = useRouter();
   const { isMobile } = useMobile();
 
   return (
@@ -76,7 +79,10 @@ export const HeaderView = ({ isDashboardActive, dashboardPath, createQuizPath }:
         disableGutters
         sx={styles.toolbar}
       >
-        <Box sx={styles.left}>
+        <Box
+          sx={styles.left}
+          onClick={() => router.push(dashboardPath)}
+        >
           <Box sx={styles.logo}>
             <Typography variant='subtitle2'>Q</Typography>
           </Box>
