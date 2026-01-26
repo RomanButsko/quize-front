@@ -1,6 +1,8 @@
 import Link from 'next/link';
-import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
+import { AppBar, Box, Button, IconButton, Toolbar, Typography } from '@mui/material';
+import CreateIcon from '@mui/icons-material/Create';
 import { sx } from '@/shared/lib';
+import { useMobile } from '@/shared/providers';
 
 const styles = sx({
   appBar: {
@@ -62,6 +64,8 @@ type HeaderViewProps = {
 };
 
 export const HeaderView = ({ isDashboardActive, dashboardPath, createQuizPath }: HeaderViewProps) => {
+  const { isMobile } = useMobile();
+
   return (
     <AppBar
       position='static'
@@ -76,13 +80,15 @@ export const HeaderView = ({ isDashboardActive, dashboardPath, createQuizPath }:
           <Box sx={styles.logo}>
             <Typography variant='subtitle2'>Q</Typography>
           </Box>
-          <Typography
-            variant='h6'
-            noWrap
-            sx={styles.brand}
-          >
-            QuizBuilder
-          </Typography>
+          {!isMobile && (
+            <Typography
+              variant='h6'
+              noWrap
+              sx={styles.brand}
+            >
+              QuizBuilder
+            </Typography>
+          )}
         </Box>
 
         <Box sx={styles.center}>
@@ -95,14 +101,23 @@ export const HeaderView = ({ isDashboardActive, dashboardPath, createQuizPath }:
           </Button>
         </Box>
 
-        <Button
-          component={Link}
-          href={createQuizPath}
-          variant='contained'
-          sx={styles.primaryButton}
-        >
-          Create New Quiz
-        </Button>
+        {isMobile ? (
+          <IconButton
+            component={Link}
+            href={createQuizPath}
+          >
+            <CreateIcon color='primary' />
+          </IconButton>
+        ) : (
+          <Button
+            component={Link}
+            href={createQuizPath}
+            variant='contained'
+            sx={styles.primaryButton}
+          >
+            Create New Quiz
+          </Button>
+        )}
       </Toolbar>
     </AppBar>
   );

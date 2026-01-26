@@ -5,6 +5,7 @@ import { Provider as ReduxProvider } from 'react-redux';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider } from '@mui/material/styles';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
+import { MobileProvider } from '@/shared/providers';
 import { theme } from '@/shared/theme';
 import { store } from '@/shared/store';
 
@@ -15,7 +16,9 @@ export const Providers = ({ children }: { children: ReactNode }) => {
     <AppRouterCacheProvider>
       <ReduxProvider store={store}>
         <QueryClientProvider client={queryClient}>
-          <ThemeProvider theme={theme}>{children}</ThemeProvider>
+          <ThemeProvider theme={theme}>
+            <MobileProvider>{children}</MobileProvider>
+          </ThemeProvider>
         </QueryClientProvider>
       </ReduxProvider>
     </AppRouterCacheProvider>
