@@ -1,11 +1,10 @@
-"use client";
+'use client';
 
-import { HeaderView } from "./header-view";
-import { useHeaderNavigation } from "../model/use-header-navigation";
+import { HeaderView } from './header-view';
+import { useHeaderNavigation } from '../model/use-header-navigation';
 
 export const Header = () => {
-  const { dashboardPath, createQuizPath, isDashboardActive } =
-    useHeaderNavigation();
+  const { dashboardPath, createQuizPath, isDashboardActive } = useHeaderNavigation();
 
   return (
     <HeaderView
@@ -15,4 +14,3 @@ export const Header = () => {
     />
   );
 };
-

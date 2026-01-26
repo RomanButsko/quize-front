@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { usePathname } from "next/navigation";
-import { paths } from "@/shared/config";
+import { usePathname } from 'next/navigation';
+import { paths } from '@/shared/config';
 
 export const useHeaderNavigation = () => {
   const pathname = usePathname();

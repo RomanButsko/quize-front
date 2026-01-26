@@ -1,11 +1,59 @@
-import Link from "next/link";
-import {
-  AppBar,
-  Box,
-  Button,
-  Toolbar,
-  Typography,
-} from "@mui/material";
+import Link from 'next/link';
+import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
+import { sx } from '@/shared/lib';
+
+const styles = sx({
+  appBar: {
+    borderBottom: 1,
+    borderColor: 'divider',
+    backgroundColor: 'background.paper',
+  },
+  toolbar: {
+    minHeight: 64,
+    px: {
+      xs: 2,
+      md: 3,
+    },
+    gap: 2,
+  },
+  left: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: 1.5,
+    minWidth: 0,
+  },
+  logo: {
+    width: 36,
+    height: 36,
+    borderRadius: '50%',
+    backgroundColor: 'primary.main',
+    color: 'primary.contrastText',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontWeight: 700,
+    flexShrink: 0,
+  },
+  brand: {
+    fontWeight: 700,
+    color: 'text.primary',
+  },
+  center: {
+    flex: 1,
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  navButton: {
+    fontWeight: 600,
+    color: 'text.secondary',
+  },
+  navButtonActive: {
+    color: 'primary.main',
+  },
+  primaryButton: {
+    fontWeight: 600,
+  },
+});
 
 type HeaderViewProps = {
   isDashboardActive: boolean;
@@ -13,69 +61,26 @@ type HeaderViewProps = {
   createQuizPath: string;
 };
 
-const styles = {
-  appBar: {
-    borderBottom: 1,
-    borderColor: "divider",
-    backgroundColor: "background.paper",
-  },
-  toolbar: {
-    minHeight: 64,
-    px: { xs: 2, md: 3 },
-    gap: 2,
-  },
-  left: {
-    display: "flex",
-    alignItems: "center",
-    gap: 1.5,
-    minWidth: 0,
-  },
-  logo: {
-    width: 36,
-    height: 36,
-    borderRadius: "50%",
-    backgroundColor: "primary.main",
-    color: "primary.contrastText",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontWeight: 700,
-    flexShrink: 0,
-  },
-  brand: {
-    fontWeight: 700,
-    color: "text.primary",
-  },
-  center: {
-    flex: 1,
-    display: "flex",
-    justifyContent: "center",
-  },
-  navButton: {
-    fontWeight: 600,
-    color: "text.secondary",
-  },
-  navButtonActive: {
-    color: "primary.main",
-  },
-  primaryButton: {
-    fontWeight: 600,
-  },
-};
-
-export const HeaderView = ({
-  isDashboardActive,
-  dashboardPath,
-  createQuizPath,
-}: HeaderViewProps) => {
+export const HeaderView = ({ isDashboardActive, dashboardPath, createQuizPath }: HeaderViewProps) => {
   return (
-    <AppBar position="static" elevation={0} sx={styles.appBar}>
-      <Toolbar disableGutters sx={styles.toolbar}>
+    <AppBar
+      position='static'
+      elevation={0}
+      sx={styles.appBar}
+    >
+      <Toolbar
+        disableGutters
+        sx={styles.toolbar}
+      >
         <Box sx={styles.left}>
           <Box sx={styles.logo}>
-            <Typography variant="subtitle2">Q</Typography>
+            <Typography variant='subtitle2'>Q</Typography>
           </Box>
-          <Typography variant="h6" noWrap sx={styles.brand}>
+          <Typography
+            variant='h6'
+            noWrap
+            sx={styles.brand}
+          >
             QuizBuilder
           </Typography>
         </Box>
@@ -84,10 +89,7 @@ export const HeaderView = ({
           <Button
             component={Link}
             href={dashboardPath}
-            sx={[
-              styles.navButton,
-              isDashboardActive && styles.navButtonActive,
-            ]}
+            sx={[styles.navButton, isDashboardActive && styles.navButtonActive]}
           >
             Quiz Dashboard
           </Button>
@@ -96,7 +98,7 @@ export const HeaderView = ({
         <Button
           component={Link}
           href={createQuizPath}
-          variant="contained"
+          variant='contained'
           sx={styles.primaryButton}
         >
           Create New Quiz
@@ -105,4 +107,3 @@ export const HeaderView = ({
     </AppBar>
   );
 };
-
