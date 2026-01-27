@@ -27,12 +27,21 @@ const styles = sx({
     display: 'flex',
     flexDirection: 'column',
     gap: 1.5,
+    maxWidth: { xs: '70%', md: '80%' },
   },
   title: {
     fontWeight: 600,
+    wordBreak: 'break-word',
+    whiteSpace: 'normal',
   },
   helper: {
     color: 'text.secondary',
+  },
+  option: {
+    '& .MuiFormControlLabel-label': {
+      wordBreak: 'break-word',
+      whiteSpace: 'normal',
+    },
   },
 });
 
@@ -65,6 +74,7 @@ export const QuestionBlock = ({ block }: QuestionBlockProps) => {
               value={option.id}
               control={<Radio />}
               label={option.label}
+              sx={styles.option}
             />
           ))}
         </RadioGroup>
@@ -76,6 +86,7 @@ export const QuestionBlock = ({ block }: QuestionBlockProps) => {
               key={option.id}
               control={<Checkbox />}
               label={option.label}
+              sx={styles.option}
             />
           ))}
         </FormGroup>
@@ -84,6 +95,7 @@ export const QuestionBlock = ({ block }: QuestionBlockProps) => {
         <TextField
           placeholder={block.input.placeholder ?? 'Type your answer'}
           size='small'
+          disabled
         />
       )}
     </Box>

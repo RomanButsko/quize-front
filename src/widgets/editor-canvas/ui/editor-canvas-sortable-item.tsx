@@ -1,10 +1,15 @@
-import { ReactNode } from 'react';
-import { Box } from '@mui/material';
+import { MouseEvent, memo } from 'react';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
+import { Box, IconButton, Stack } from '@mui/material';
 import { useSortableBlock } from '@/features/quiz-editor';
+import { renderQuizBlock } from '@/entities/quiz-block/lib';
+import type { QuizBlock } from '@/entities/quiz-block/model/types';
 import { sx } from '@/shared/lib';
 
 const styles = sx({
   block: {
+    position: 'relative',
     border: 1,
     borderColor: 'divider',
     borderRadius: 2,
@@ -18,24 +23,51 @@ const styles = sx({
   blockDragging: {
     opacity: 0.5,
   },
+  controls: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    alignItems: 'center',
+  },
+  dragHandle: {
+    cursor: 'grab',
+  },
 });
 
 type EditorCanvasSortableItemProps = {
   id: string;
   selected: boolean;
   onSelect: (id: string) => void;
-  children: ReactNode;
+  onDelete: (id: string) => void;
+  block: QuizBlock;
+  draft: QuizBlock | null;
   disabled?: boolean;
 };
 
-export const EditorCanvasSortableItem = ({
+export const EditorCanvasSortableItem = memo(function EditorCanvasSortableItem({
   id,
   selected,
   onSelect,
-  children,
+  onDelete,
+  block,
+  draft,
   disabled,
-}: EditorCanvasSortableItemProps) => {
+}: EditorCanvasSortableItemProps) {
   const { attributes, listeners, setNodeRef, style, isDragging } = useSortableBlock(id, { disabled });
+  const renderedBlock = draft ?? block;
+
+  const handleDeleteClick = (event: MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    onDelete(id);
+  };
+
+  const handleDeletePointerDown = (event: MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+  };
+
+  const handleDragPointerDown = (event: MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+  };
 
   return (
     <Box
@@ -43,10 +75,30 @@ export const EditorCanvasSortableItem = ({
       style={style}
       sx={[styles.block, selected && styles.blockSelected, isDragging && styles.blockDragging]}
       onClick={() => onSelect(id)}
-      {...attributes}
-      {...listeners}
     >
-      {children}
+      <Stack
+        direction='row'
+        spacing={0.5}
+        sx={styles.controls}
+      >
+        <IconButton
+          size='small'
+          sx={styles.dragHandle}
+          onPointerDown={handleDragPointerDown}
+          {...attributes}
+          {...listeners}
+        >
+          <DragIndicatorIcon fontSize='small' />
+        </IconButton>
+        <IconButton
+          size='small'
+          onClick={handleDeleteClick}
+          onPointerDown={handleDeletePointerDown}
+        >
+          <DeleteOutlineIcon fontSize='small' />
+        </IconButton>
+      </Stack>
+      {renderQuizBlock(renderedBlock)}
     </Box>
   );
-};
+});

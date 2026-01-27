@@ -15,18 +15,22 @@ const headingVariant = {
 const styles = sx({
   root: {
     display: 'flex',
+    maxWidth: { xs: '70%', md: '80%' },
+  },
+  text: {
+    wordBreak: 'break-word',
+    whiteSpace: 'normal',
   },
 });
 
-export const HeadingBlock = ({ block }: HeadingBlockProps) => {
-  return (
-    <Box sx={styles.root}>
-      <Typography
-        variant={headingVariant[block.level]}
-        textAlign={block.align}
-      >
-        {block.text}
-      </Typography>
-    </Box>
-  );
-};
+export const HeadingBlock = ({ block }: HeadingBlockProps) => (
+  <Box sx={styles.root}>
+    <Typography
+      variant={headingVariant[block.level]}
+      textAlign={block.align}
+      sx={styles.text}
+    >
+      {block.text}
+    </Typography>
+  </Box>
+);

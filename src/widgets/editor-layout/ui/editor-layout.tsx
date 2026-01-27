@@ -5,6 +5,7 @@ import { EditorLeftSidebar } from '@/widgets/editor-left-sidebar';
 import { EditorCanvas } from '@/widgets/editor-canvas';
 import { EditorPropertiesSidebar } from '@/widgets/editor-properties-sidebar';
 import { EditorDndContext } from '@/features/quiz-editor';
+import { BlockDraftProvider } from '@/features/quiz-block-properties';
 import { sx } from '@/shared/lib';
 import { HEADER_HEIGHT } from '@/shared/ui';
 
@@ -56,26 +57,28 @@ export const EditorLayout = () => {
         spacing={2}
         sx={styles.content}
       >
-        <EditorDndContext>
+        <BlockDraftProvider>
+          <EditorDndContext>
+            <Grid
+              size={{ xs: 12, lg: 'auto' }}
+              sx={styles.left}
+            >
+              <EditorLeftSidebar />
+            </Grid>
+            <Grid
+              size={{ xs: 12, lg: 'grow' }}
+              sx={styles.canvas}
+            >
+              <EditorCanvas />
+            </Grid>
+          </EditorDndContext>
           <Grid
             size={{ xs: 12, lg: 'auto' }}
-            sx={styles.left}
+            sx={styles.right}
           >
-            <EditorLeftSidebar />
+            <EditorPropertiesSidebar />
           </Grid>
-          <Grid
-            size={{ xs: 12, lg: 'grow' }}
-            sx={styles.canvas}
-          >
-            <EditorCanvas />
-          </Grid>
-        </EditorDndContext>
-        <Grid
-          size={{ xs: 12, lg: 'auto' }}
-          sx={styles.right}
-        >
-          <EditorPropertiesSidebar />
-        </Grid>
+        </BlockDraftProvider>
       </Grid>
     </Box>
   );

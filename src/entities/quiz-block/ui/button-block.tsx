@@ -9,13 +9,21 @@ type ButtonBlockProps = {
 const styles = sx({
   root: {
     display: 'flex',
+    maxWidth: { xs: '70%', md: '80%' },
+  },
+  button: {
+    wordBreak: 'break-word',
+    whiteSpace: 'normal',
   },
 });
 
-export const ButtonBlock = ({ block }: ButtonBlockProps) => {
-  return (
-    <Box sx={[styles.root, { justifyContent: block.align ?? 'flex-start' }]}>
-      <Button variant={block.variant}>{block.label}</Button>
-    </Box>
-  );
-};
+export const ButtonBlock = ({ block }: ButtonBlockProps) => (
+  <Box sx={[styles.root, { justifyContent: block.align ?? 'flex-start' }]}>
+    <Button
+      variant={block.variant}
+      sx={styles.button}
+    >
+      {block.label}
+    </Button>
+  </Box>
+);

@@ -2,7 +2,7 @@
 
 import { Box, Paper } from '@mui/material';
 import { useCanvasDroppable, useCanvasRenderList } from '@/features/quiz-editor';
-import { renderQuizBlock } from '@/entities/quiz-block/lib';
+import { useBlockDraftContext } from '@/features/quiz-block-properties';
 import { sx } from '@/shared/lib';
 import { useEditorCanvas } from '../model/use-editor-canvas';
 import { EditorCanvasSortableItem } from './editor-canvas-sortable-item';
@@ -30,7 +30,8 @@ const styles = sx({
 });
 
 export const EditorCanvas = () => {
-  const { blocks, selectedBlockId, isEmpty, handleSelect } = useEditorCanvas();
+  const { blocks, selectedBlockId, isEmpty, handleSelect, handleDelete } = useEditorCanvas();
+  const { draft } = useBlockDraftContext();
 
   const { setNodeRef } = useCanvasDroppable();
 
@@ -58,9 +59,10 @@ export const EditorCanvas = () => {
                 id={item.id}
                 selected={item.id === selectedBlockId}
                 onSelect={handleSelect}
-              >
-                {renderQuizBlock(item.block)}
-              </EditorCanvasSortableItem>
+                onDelete={handleDelete}
+                block={item.block}
+                draft={draft?.id === item.block.id ? draft : null}
+              />
             )
           )}
         </Box>

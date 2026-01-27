@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@/shared/store/hooks';
-import { selectBlock } from '@/shared/store';
+import { removeBlock, selectBlock } from '@/shared/store';
 
 export const useEditorCanvas = () => {
   const dispatch = useAppDispatch();
@@ -12,10 +12,15 @@ export const useEditorCanvas = () => {
     dispatch(selectBlock(id));
   };
 
+  const handleDelete = (id: string) => {
+    dispatch(removeBlock(id));
+  };
+
   return {
     blocks,
     selectedBlockId,
     isEmpty,
     handleSelect,
+    handleDelete,
   };
 };
