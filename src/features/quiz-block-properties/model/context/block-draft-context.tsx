@@ -18,6 +18,7 @@ type BlockDraftContextValue = {
   setQuestionPlaceholder: (placeholder: string) => void;
   setButtonLabel: (label: string) => void;
   setButtonVariant: (variant: 'contained' | 'outlined' | 'text') => void;
+  setButtonAction: (action: 'cancel' | 'submit') => void;
   saveDraft: () => void;
   cancelDraft: () => void;
 };
@@ -99,6 +100,10 @@ const DraftStateProvider = ({ children, selectedBlock }: DraftStateProviderProps
     updateDraft((current) => (current.type === 'button' ? { ...current, variant } : current));
   };
 
+  const setButtonAction = (action: 'cancel' | 'submit') => {
+    updateDraft((current) => (current.type === 'button' ? { ...current, action } : current));
+  };
+
   const saveDraft = () => {
     if (!draft) {
       return;
@@ -124,6 +129,7 @@ const DraftStateProvider = ({ children, selectedBlock }: DraftStateProviderProps
     setQuestionPlaceholder,
     setButtonLabel,
     setButtonVariant,
+    setButtonAction,
     saveDraft,
     cancelDraft,
   };

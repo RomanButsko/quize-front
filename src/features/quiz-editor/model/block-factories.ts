@@ -35,6 +35,7 @@ export const blockFactories: BlockFactory[] = [
       label: 'Continue',
       variant: 'contained',
       align: 'left',
+      action: 'submit',
     }),
   },
   {
@@ -52,7 +53,7 @@ export const blockFactories: BlockFactory[] = [
   {
     id: 'question-single',
     type: 'question',
-    label: 'Question (Single choice)',
+    label: 'Single Choice',
     group: 'questions',
     create: () => ({
       id: crypto.randomUUID(),
@@ -71,7 +72,7 @@ export const blockFactories: BlockFactory[] = [
   {
     id: 'question-multiple',
     type: 'question',
-    label: 'Question (Multiple choice)',
+    label: 'Multiple Choice',
     group: 'questions',
     create: () => ({
       id: crypto.randomUUID(),
@@ -90,7 +91,7 @@ export const blockFactories: BlockFactory[] = [
   {
     id: 'question-text',
     type: 'question',
-    label: 'Question (Text input)',
+    label: 'Text Input',
     group: 'questions',
     create: () => ({
       id: crypto.randomUUID(),

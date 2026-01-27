@@ -18,9 +18,10 @@ type ButtonFieldsProps = {
   block: ButtonBlock;
   onLabelChange: (event: FieldChangeEvent) => void;
   onVariantChange: (event: React.MouseEvent<HTMLElement>, value: ButtonBlock['variant'] | null) => void;
+  onActionChange: (event: React.MouseEvent<HTMLElement>, value: ButtonBlock['action'] | null) => void;
 };
 
-export const ButtonFields = ({ block, onLabelChange, onVariantChange }: ButtonFieldsProps) => {
+export const ButtonFields = ({ block, onLabelChange, onVariantChange, onActionChange }: ButtonFieldsProps) => {
   return (
     <Stack spacing={1.5}>
       <Typography
@@ -53,6 +54,23 @@ export const ButtonFields = ({ block, onLabelChange, onVariantChange }: ButtonFi
           <ToggleButton value='text'>Text</ToggleButton>
         </ToggleButtonGroup>
       </Stack>
+      <Stack spacing={0.75}>
+        <Typography
+          variant='caption'
+          sx={styles.helper}
+        >
+          Action
+        </Typography>
+      </Stack>
+      <ToggleButtonGroup
+        size='small'
+        exclusive
+        value={block.action}
+        onChange={onActionChange}
+      >
+        <ToggleButton value='submit'>Submit</ToggleButton>
+        <ToggleButton value='cancel'>Cancel</ToggleButton>
+      </ToggleButtonGroup>
     </Stack>
   );
 };

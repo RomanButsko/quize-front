@@ -7,19 +7,20 @@ export const useEditorActionsState = () => {
   const dispatch = useAppDispatch();
 
   const title = useAppSelector((state) => state.editor.title);
-  const blocksCount = useAppSelector((state) => state.editor.blocks.length);
+  const blocks = useAppSelector((state) => state.editor.blocks);
 
   const updateTitle = (title: string) => {
     dispatch(setQuizTitle(title));
   };
 
   const hasTitle = title.trim().length > 0;
-  const hasBlocks = blocksCount > 0;
+  const hasBlocks = blocks.length > 0;
+  const isButtonPresent = blocks.some((block) => block.type === 'button');
 
   return {
     title,
-    isSaveDisabled: !hasTitle || !hasBlocks,
-    isPublishDisabled: !hasTitle || !hasBlocks,
+    isSaveDisabled: !hasTitle || !hasBlocks || !isButtonPresent,
+    isPublishDisabled: !hasTitle || !hasBlocks || !isButtonPresent,
     updateTitle,
   };
 };

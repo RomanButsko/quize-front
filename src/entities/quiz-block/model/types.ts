@@ -14,6 +14,7 @@ export type ButtonBlock = {
   label: string;
   variant: 'text' | 'outlined' | 'contained';
   align?: 'left' | 'center' | 'right';
+  action: 'cancel' | 'submit';
 };
 
 export type FooterBlock = {

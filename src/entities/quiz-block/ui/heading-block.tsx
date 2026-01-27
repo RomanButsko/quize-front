@@ -4,6 +4,7 @@ import type { HeadingBlock as HeadingBlockType } from '../model/types';
 
 type HeadingBlockProps = {
   block: HeadingBlockType;
+  typographyProps?: TypographyProps;
 };
 
 const headingVariant = {
@@ -23,12 +24,13 @@ const styles = sx({
   },
 });
 
-export const HeadingBlock = ({ block }: HeadingBlockProps) => (
+export const HeadingBlock = ({ block, typographyProps }: HeadingBlockProps) => (
   <Box sx={styles.root}>
     <Typography
       variant={headingVariant[block.level]}
       textAlign={block.align}
       sx={styles.text}
+      {...typographyProps}
     >
       {block.text}
     </Typography>

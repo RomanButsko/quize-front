@@ -8,13 +8,20 @@ import {
   Stack,
   TextField,
   Typography,
+  TextFieldProps,
+  FormGroupProps,
+  RadioGroupProps,
 } from '@mui/material';
+import { usePathname } from 'next/navigation';
 import { sx } from '@/shared/lib';
 import type { QuestionBlock as QuestionBlockType, QuestionOption } from '../model/types';
 import { hasOptions } from '../lib';
 
 type QuestionBlockProps = {
   block: QuestionBlockType;
+  radioGroupProps?: RadioGroupProps;
+  formGroupProps?: FormGroupProps;
+  textFieldProps?: TextFieldProps;
 };
 
 const placeholderOptions: QuestionOption[] = [
@@ -45,8 +52,12 @@ const styles = sx({
   },
 });
 
-export const QuestionBlock = ({ block }: QuestionBlockProps) => {
+export const QuestionBlock = ({ block, radioGroupProps, formGroupProps, textFieldProps }: QuestionBlockProps) => {
+  const pathname = usePathname();
+
   const options = hasOptions(block.input) && block.input.options.length > 0 ? block.input.options : placeholderOptions;
+
+  const isViewing = !pathname.includes('edit');
 
   return (
     <Box sx={styles.root}>
@@ -67,7 +78,7 @@ export const QuestionBlock = ({ block }: QuestionBlockProps) => {
         )}
       </Stack>
       {block.input.type === 'radio' && (
-        <RadioGroup>
+        <RadioGroup {...radioGroupProps}>
           {options.map((option) => (
             <FormControlLabel
               key={option.id}
@@ -80,7 +91,7 @@ export const QuestionBlock = ({ block }: QuestionBlockProps) => {
         </RadioGroup>
       )}
       {block.input.type === 'checkbox' && (
-        <FormGroup>
+        <FormGroup {...formGroupProps}>
           {options.map((option) => (
             <FormControlLabel
               key={option.id}
@@ -95,7 +106,8 @@ export const QuestionBlock = ({ block }: QuestionBlockProps) => {
         <TextField
           placeholder={block.input.placeholder ?? 'Type your answer'}
           size='small'
-          disabled
+          disabled={!isViewing}
+          {...textFieldProps}
         />
       )}
     </Box>

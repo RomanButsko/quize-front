@@ -1,6 +1,7 @@
 'use client';
 
 import { Box, Button, Stack, TextField, Typography } from '@mui/material';
+import { useAppSelector } from '@/shared/store/hooks';
 import { sx } from '@/shared/lib';
 import { useEditorActionsState } from '../model/use-editor-actions-state';
 
@@ -38,6 +39,16 @@ const styles = sx({
 export const EditorHeader = () => {
   const { title, isSaveDisabled, isPublishDisabled, updateTitle } = useEditorActionsState();
 
+  const quizeData = useAppSelector((state) => state.editor);
+
+  const handlePublish = (action: 'save' | 'publish') => {
+    if (action === 'save') {
+      console.log('save', { blocks: quizeData.blocks, title: quizeData.title, type: 'draft' });
+    } else {
+      console.log('publish', { blocks: quizeData.blocks, title: quizeData.title, type: 'published' });
+    }
+  };
+
   return (
     <Box sx={styles.root}>
       <Stack
@@ -64,12 +75,14 @@ export const EditorHeader = () => {
           <Button
             variant='outlined'
             disabled={isSaveDisabled}
+            onClick={() => handlePublish('save')}
           >
             Save
           </Button>
           <Button
             variant='contained'
             disabled={isPublishDisabled}
+            onClick={() => handlePublish('publish')}
           >
             Publish
           </Button>

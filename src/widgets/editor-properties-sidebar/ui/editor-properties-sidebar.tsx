@@ -40,6 +40,7 @@ export const EditorPropertiesSidebar = () => {
     setQuestionPlaceholder,
     setButtonLabel,
     setButtonVariant,
+    setButtonAction,
     saveDraft,
     cancelDraft,
   } = useBlockDraftContext();
@@ -71,6 +72,12 @@ export const EditorPropertiesSidebar = () => {
   const handleButtonVariantChange = (_event: MouseEvent<HTMLElement>, value: ButtonBlock['variant'] | null) => {
     if (value) {
       setButtonVariant(value);
+    }
+  };
+
+  const handleButtonActionChange = (_event: MouseEvent<HTMLElement>, value: ButtonBlock['action'] | null) => {
+    if (value) {
+      setButtonAction(value);
     }
   };
 
@@ -120,6 +127,7 @@ export const EditorPropertiesSidebar = () => {
             block={draft}
             onLabelChange={handleButtonLabelChange}
             onVariantChange={handleButtonVariantChange}
+            onActionChange={handleButtonActionChange}
           />
         )}
         {draft.type === 'footer' && (

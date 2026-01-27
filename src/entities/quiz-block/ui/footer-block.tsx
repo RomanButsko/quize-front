@@ -1,9 +1,10 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, type TypographyProps } from '@mui/material';
 import { sx } from '@/shared/lib';
 import type { FooterBlock as FooterBlockType } from '../model/types';
 
 type FooterBlockProps = {
   block: FooterBlockType;
+  typographyProps?: TypographyProps;
 };
 
 const styles = sx({
@@ -18,12 +19,13 @@ const styles = sx({
   },
 });
 
-export const FooterBlock = ({ block }: FooterBlockProps) => (
+export const FooterBlock = ({ block, typographyProps }: FooterBlockProps) => (
   <Box sx={[styles.root, { justifyContent: block.align ?? 'flex-start' }]}>
     <Typography
       variant='body2'
       sx={styles.text}
       textAlign={block.align}
+      {...typographyProps}
     >
       {block.text}
     </Typography>

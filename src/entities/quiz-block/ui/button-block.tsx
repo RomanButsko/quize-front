@@ -1,9 +1,14 @@
-import { Box, Button } from '@mui/material';
+'use client';
+
+import { Box, Button, type ButtonProps } from '@mui/material';
+import { useRouter } from 'next/navigation';
 import { sx } from '@/shared/lib';
+import { paths } from '@/shared/config';
 import type { ButtonBlock as ButtonBlockType } from '../model/types';
 
 type ButtonBlockProps = {
   block: ButtonBlockType;
+  buttonProps?: ButtonProps;
 };
 
 const styles = sx({
@@ -17,13 +22,27 @@ const styles = sx({
   },
 });
 
-export const ButtonBlock = ({ block }: ButtonBlockProps) => (
-  <Box sx={[styles.root, { justifyContent: block.align ?? 'flex-start' }]}>
-    <Button
-      variant={block.variant}
-      sx={styles.button}
-    >
-      {block.label}
-    </Button>
-  </Box>
-);
+export const ButtonBlock = ({ block, buttonProps }: ButtonBlockProps) => {
+  const router = useRouter();
+
+  const handleClick = () => {
+    if (block.action === 'submit') {
+      router.push(paths.dashboard);
+    } else if (block.action === 'cancel') {
+      router.back();
+    }
+  };
+
+  return (
+    <Box sx={[styles.root, { justifyContent: block.align ?? 'flex-start' }]}>
+      <Button
+        variant={block.variant}
+        sx={styles.button}
+        onClick={handleClick}
+        {...buttonProps}
+      >
+        {block.label}
+      </Button>
+    </Box>
+  );
+};
