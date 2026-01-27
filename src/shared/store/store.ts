@@ -1,9 +1,12 @@
 'use client';
 
 import { configureStore } from '@reduxjs/toolkit';
+import { editorReducer } from './editor/editor.slice';
 
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    editor: editorReducer,
+  },
 });
 
 export type RootState = ReturnType<typeof store.getState>;

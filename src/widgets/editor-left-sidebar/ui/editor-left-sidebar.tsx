@@ -1,7 +1,9 @@
-import { Box, Paper, Stack, Typography } from '@mui/material';
-import { sx } from '@/shared/lib';
+'use client';
 
-const blocks = ['Heading', 'Question', 'Button', 'Footer'];
+import { Box, Divider, Paper, Stack, Typography } from '@mui/material';
+import { blockFactories } from '@/features/quiz-editor';
+import { SidebarDraggableItem } from '@/features/quiz-editor';
+import { sx } from '@/shared/lib';
 
 const styles = sx({
   root: {
@@ -17,16 +19,15 @@ const styles = sx({
   title: {
     fontWeight: 600,
   },
-  item: {
-    px: 1.5,
-    py: 1,
-    borderRadius: 1,
-    border: 1,
-    borderColor: 'divider',
-    cursor: 'grab',
-    userSelect: 'none',
+  sectionTitle: {
+    fontWeight: 600,
+    color: 'text.secondary',
+    textTransform: 'uppercase',
   },
 });
+
+const contentBlocks = blockFactories.filter((block) => block.group === 'content');
+const questionBlocks = blockFactories.filter((block) => block.group === 'questions');
 
 export const EditorLeftSidebar = () => {
   return (
@@ -42,15 +43,38 @@ export const EditorLeftSidebar = () => {
           >
             Building blocks
           </Typography>
-          <Stack spacing={1}>
-            {blocks.map((block) => (
-              <Box
-                key={block}
-                sx={styles.item}
-              >
-                <Typography variant='body2'>{block}</Typography>
-              </Box>
-            ))}
+          <Stack spacing={1.5}>
+            <Typography
+              variant='caption'
+              sx={styles.sectionTitle}
+            >
+              Content
+            </Typography>
+            <Stack spacing={1}>
+              {contentBlocks.map((block) => (
+                <SidebarDraggableItem
+                  key={block.id}
+                  factoryId={block.id}
+                  label={block.label}
+                />
+              ))}
+            </Stack>
+            <Divider />
+            <Typography
+              variant='caption'
+              sx={styles.sectionTitle}
+            >
+              Questions
+            </Typography>
+            <Stack spacing={1}>
+              {questionBlocks.map((block) => (
+                <SidebarDraggableItem
+                  key={block.id}
+                  factoryId={block.id}
+                  label={block.label}
+                />
+              ))}
+            </Stack>
           </Stack>
         </Stack>
       </Paper>
