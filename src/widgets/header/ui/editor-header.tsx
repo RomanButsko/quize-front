@@ -1,5 +1,8 @@
+'use client';
+
 import { Box, Button, Stack, TextField, Typography } from '@mui/material';
 import { sx } from '@/shared/lib';
+import { useEditorActionsState } from '../model/use-editor-actions-state';
 
 const styles = sx({
   root: {
@@ -33,6 +36,8 @@ const styles = sx({
 });
 
 export const EditorHeader = () => {
+  const { title, isSaveDisabled, isPublishDisabled, updateTitle } = useEditorActionsState();
+
   return (
     <Box sx={styles.root}>
       <Stack
@@ -49,13 +54,25 @@ export const EditorHeader = () => {
           size='small'
           placeholder='Quiz title'
           sx={styles.input}
+          value={title}
+          onChange={(event) => updateTitle(event.target.value)}
         />
         <Stack
           direction='row'
           sx={styles.actions}
         >
-          <Button variant='outlined'>Save</Button>
-          <Button variant='contained'>Publish</Button>
+          <Button
+            variant='outlined'
+            disabled={isSaveDisabled}
+          >
+            Save
+          </Button>
+          <Button
+            variant='contained'
+            disabled={isPublishDisabled}
+          >
+            Publish
+          </Button>
         </Stack>
       </Stack>
     </Box>

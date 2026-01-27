@@ -17,6 +17,9 @@ export const editorSlice = createSlice({
       state.quizId = action.payload.id;
       state.title = action.payload.title;
     },
+    setQuizTitle(state, action: PayloadAction<string>) {
+      state.title = action.payload;
+    },
     setBlocks(state, action: PayloadAction<QuizBlock[]>) {
       state.blocks = action.payload;
     },
@@ -45,7 +48,7 @@ export const editorSlice = createSlice({
   },
 });
 
-export const { setQuizInfo, setBlocks, selectBlock, addBlock, updateBlock, removeBlock, resetEditor } =
+export const { setQuizInfo, setQuizTitle, setBlocks, selectBlock, addBlock, updateBlock, removeBlock, resetEditor } =
   editorSlice.actions;
 
 export const editorReducer = editorSlice.reducer;
