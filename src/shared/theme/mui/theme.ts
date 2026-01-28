@@ -6,5 +6,7 @@ import { colors } from './colors';
 export const theme = createTheme({
   palette: {
     primary: colors.primary,
+    secondary: colors.secondary,
+    success: colors.success,
   },
 });

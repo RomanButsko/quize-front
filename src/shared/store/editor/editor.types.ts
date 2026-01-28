@@ -5,6 +5,14 @@ export type EditorState = {
   title: string;
   blocks: QuizBlock[];
   selectedBlockId: string | null;
+  published: boolean;
+};
+
+export type InitializeEditorPayload = {
+  quizId: string;
+  title: string;
+  blocks: QuizBlock[];
+  published: boolean;
 };
 
 export type QuizInfoPayload = {

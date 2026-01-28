@@ -6,6 +6,7 @@ export type BlockFactory = {
   id: string;
   type: QuizBlock['type'];
   label: string;
+  required?: boolean;
   group: BlockFactoryGroup;
   create: () => QuizBlock;
 };
@@ -28,6 +29,7 @@ export const blockFactories: BlockFactory[] = [
     id: 'button',
     type: 'button',
     label: 'Button',
+    required: true,
     group: 'content',
     create: () => ({
       id: crypto.randomUUID(),

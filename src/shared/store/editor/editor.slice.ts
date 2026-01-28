@@ -1,18 +1,26 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { QuizBlock } from '@/entities/quiz-block/model/types';
-import type { EditorState, QuizInfoPayload, UpdateBlockPayload } from './editor.types';
+import type { EditorState, InitializeEditorPayload, QuizInfoPayload, UpdateBlockPayload } from './editor.types';
 
 const initialState: EditorState = {
   quizId: null,
   title: '',
   blocks: [],
   selectedBlockId: null,
+  published: false,
 };
 
 export const editorSlice = createSlice({
   name: 'editor',
   initialState,
   reducers: {
+    initializeEditor(state, action: PayloadAction<InitializeEditorPayload>) {
+      state.quizId = action.payload.quizId;
+      state.title = action.payload.title;
+      state.blocks = action.payload.blocks;
+      state.published = action.payload.published;
+      state.selectedBlockId = null;
+    },
     setQuizInfo(state, action: PayloadAction<QuizInfoPayload>) {
       state.quizId = action.payload.id;
       state.title = action.payload.title;
@@ -48,7 +56,16 @@ export const editorSlice = createSlice({
   },
 });
 
-export const { setQuizInfo, setQuizTitle, setBlocks, selectBlock, addBlock, updateBlock, removeBlock, resetEditor } =
-  editorSlice.actions;
+export const {
+  initializeEditor,
+  setQuizInfo,
+  setQuizTitle,
+  setBlocks,
+  selectBlock,
+  addBlock,
+  updateBlock,
+  removeBlock,
+  resetEditor,
+} = editorSlice.actions;
 
 export const editorReducer = editorSlice.reducer;

@@ -1,9 +1,9 @@
 'use client';
 
-import { Box, Button, Stack, TextField, Typography } from '@mui/material';
-import { useAppSelector } from '@/shared/store/hooks';
+import { Box, Button, Stack, TextField, Tooltip, Typography } from '@mui/material';
 import { sx } from '@/shared/lib';
 import { useEditorActionsState } from '../model/use-editor-actions-state';
+import { useEditorMutations } from '../model/use-editor-mutations';
 
 const styles = sx({
   root: {
@@ -37,17 +37,8 @@ const styles = sx({
 });
 
 export const EditorHeader = () => {
-  const { title, isSaveDisabled, isPublishDisabled, updateTitle } = useEditorActionsState();
-
-  const quizeData = useAppSelector((state) => state.editor);
-
-  const handlePublish = (action: 'save' | 'publish') => {
-    if (action === 'save') {
-      console.log('save', { blocks: quizeData.blocks, title: quizeData.title, type: 'draft' });
-    } else {
-      console.log('publish', { blocks: quizeData.blocks, title: quizeData.title, type: 'published' });
-    }
-  };
+  const { title, isSaveDisabled, isPublishDisabled, isButtonPresent, updateTitle } = useEditorActionsState();
+  const { isSaving, isPublishing, handleSave, handlePublish } = useEditorMutations();
 
   return (
     <Box sx={styles.root}>
@@ -72,17 +63,23 @@ export const EditorHeader = () => {
           direction='row'
           sx={styles.actions}
         >
-          <Button
-            variant='outlined'
-            disabled={isSaveDisabled}
-            onClick={() => handlePublish('save')}
-          >
-            Save
-          </Button>
+          <Tooltip title={!isButtonPresent ? 'Button is required for quiz' : ''}>
+            <span>
+              <Button
+                variant='outlined'
+                disabled={isSaveDisabled || isSaving}
+                onClick={handleSave}
+                loading={isSaving}
+              >
+                Save
+              </Button>
+            </span>
+          </Tooltip>
           <Button
             variant='contained'
-            disabled={isPublishDisabled}
-            onClick={() => handlePublish('publish')}
+            disabled={isPublishDisabled || isPublishing}
+            onClick={handlePublish}
+            loading={isPublishing}
           >
             Publish
           </Button>

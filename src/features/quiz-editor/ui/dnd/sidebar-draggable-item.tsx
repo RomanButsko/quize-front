@@ -7,6 +7,7 @@ import { sx } from '@/shared/lib';
 type SidebarDraggableItemProps = {
   factoryId: string;
   label: string;
+  required?: boolean;
 };
 
 const styles = sx({
@@ -28,7 +29,7 @@ const styles = sx({
   },
 });
 
-export const SidebarDraggableItem = ({ factoryId, label }: SidebarDraggableItemProps) => {
+export const SidebarDraggableItem = ({ factoryId, label, required }: SidebarDraggableItemProps) => {
   const { attributes, listeners, setNodeRef, isDragging } = useSidebarDraggable(factoryId);
 
   return (
@@ -38,7 +39,17 @@ export const SidebarDraggableItem = ({ factoryId, label }: SidebarDraggableItemP
       {...attributes}
       {...listeners}
     >
-      <Typography variant='body2'>{label}</Typography>
+      <Typography variant='body2'>
+        {label}{' '}
+        {required && (
+          <Typography
+            variant='caption'
+            color='error'
+          >
+            (required)
+          </Typography>
+        )}
+      </Typography>
     </Box>
   );
 };

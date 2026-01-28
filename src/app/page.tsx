@@ -1,6 +1,5 @@
 import { Box, Stack, Typography } from '@mui/material';
 import { QuizTable } from '@/widgets/quiz-table';
-import { mockQuizzes } from '@/shared/__mock__';
 import { sx } from '@/shared/lib';
 
 const styles = sx({
@@ -39,7 +38,7 @@ export default function Home() {
             Manage and publish your quizzes
           </Typography>
         </Stack>
-        <QuizTable quizzes={mockQuizzes} />
+        <QuizTable />
       </Stack>
     </Box>
   );

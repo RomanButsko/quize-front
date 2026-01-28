@@ -5,6 +5,7 @@ import {
   Box,
   Button,
   Chip,
+  CircularProgress,
   Paper,
   Table,
   TableBody,
@@ -16,9 +17,11 @@ import {
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import type { QuizListItem } from '@/entities/quiz';
+import { useQuery } from '@tanstack/react-query';
+import { getQuizListQuery } from '@/entities/quiz';
 import { paths } from '@/shared/config';
 import { formatDateDayMonthYear, sx } from '@/shared/lib';
+import { QuizTableEmpty } from './quiz-table-empty';
 
 const styles = sx({
   container: {
@@ -41,15 +44,27 @@ const styles = sx({
   },
   actions: {
     display: 'flex',
-    gap: 1,
+    gap: 2,
+  },
+  loader: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '50vh',
   },
 });
 
-type QuizTableProps = {
-  quizzes: QuizListItem[];
-};
+export const QuizTable = () => {
+  const { data: quizzes, isLoading } = useQuery(getQuizListQuery());
 
-export const QuizTable = ({ quizzes }: QuizTableProps) => {
+  if (isLoading) {
+    return (
+      <Box sx={styles.loader}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
   return (
     <TableContainer
       component={Paper}
@@ -65,52 +80,60 @@ export const QuizTable = ({ quizzes }: QuizTableProps) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {quizzes.map(({ id, title, updatedAt, published }) => (
-            <TableRow
-              key={id}
-              sx={styles.row}
-            >
-              <TableCell>
-                <Typography
-                  variant='body1'
-                  sx={styles.title}
+          {!quizzes || quizzes.length === 0 ? (
+            <QuizTableEmpty />
+          ) : (
+            <>
+              {quizzes.map(({ id, title, updatedAt, published }) => (
+                <TableRow
+                  key={id}
+                  sx={styles.row}
                 >
-                  {title}
-                </Typography>
-              </TableCell>
-              <TableCell>{formatDateDayMonthYear(updatedAt)}</TableCell>
-              <TableCell>
-                <Chip
-                  label={published ? 'Published' : 'Draft'}
-                  color={published ? 'success' : 'default'}
-                  size='small'
-                />
-              </TableCell>
-              <TableCell>
-                <Box sx={styles.actions}>
-                  <Button
-                    component={Link}
-                    href={paths.quizEditById(id)}
-                    size='small'
-                    variant='text'
-                    startIcon={<EditIcon />}
-                  >
-                    <Typography variant='body2'>Edit</Typography>
-                  </Button>
-                  <Button
-                    size='small'
-                    variant='text'
-                    component={Link}
-                    href={paths.quizViewById(id)}
-                    disabled={!published}
-                    startIcon={<VisibilityIcon />}
-                  >
-                    <Typography variant='body2'>View</Typography>
-                  </Button>
-                </Box>
-              </TableCell>
-            </TableRow>
-          ))}
+                  <TableCell>
+                    <Typography
+                      variant='body1'
+                      sx={styles.title}
+                    >
+                      {title}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>{formatDateDayMonthYear(updatedAt)}</TableCell>
+                  <TableCell>
+                    <Chip
+                      label={published ? 'Published' : 'Draft'}
+                      color={published ? 'success' : 'default'}
+                      size='small'
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <Box sx={styles.actions}>
+                      <Button
+                        component={Link}
+                        href={paths.quizEditById(id)}
+                        size='small'
+                        variant='text'
+                        color='secondary'
+                        startIcon={<EditIcon />}
+                      >
+                        <Typography variant='body2'>Edit</Typography>
+                      </Button>
+                      <Button
+                        size='small'
+                        variant='text'
+                        component={Link}
+                        href={paths.quizViewById(id)}
+                        disabled={!published}
+                        color='secondary'
+                        startIcon={<VisibilityIcon />}
+                      >
+                        <Typography variant='body2'>View</Typography>
+                      </Button>
+                    </Box>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </>
+          )}
         </TableBody>
       </Table>
     </TableContainer>

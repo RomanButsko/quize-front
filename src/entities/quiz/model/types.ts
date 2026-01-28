@@ -7,6 +7,11 @@ export type QuizListItem = {
   published: boolean;
 };
 
+/* eslint-ignore-next-line @typescript-eslint/no-empty-object-type */
+export interface QuizItemDto extends Quiz {}
+/* eslint-ignore-next-line @typescript-eslint/no-empty-object-type */
+export interface QuizListItemDto extends QuizListItem {}
+
 export type Quiz = {
   id: string;
   title: string;
@@ -14,6 +19,15 @@ export type Quiz = {
   updatedAt: string;
   blocks: QuizBlock[];
 };
+
+export type CreateQuizPayload = {
+  title: string;
+  blocks?: QuizBlock[];
+};
+
+export type UpdateQuizPayload = Pick<Quiz, 'id' | 'title' | 'blocks'>;
+
+export type PublishQuizPayload = Pick<Quiz, 'id'>;
 
 export const testData: Quiz = {
   blocks: [

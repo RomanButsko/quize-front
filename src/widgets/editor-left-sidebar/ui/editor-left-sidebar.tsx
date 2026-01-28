@@ -56,6 +56,7 @@ export const EditorLeftSidebar = () => {
                   key={block.id}
                   factoryId={block.id}
                   label={block.label}
+                  required={block.required}
                 />
               ))}
             </Stack>
@@ -72,6 +73,7 @@ export const EditorLeftSidebar = () => {
                   key={block.id}
                   factoryId={block.id}
                   label={block.label}
+                  required={block.required}
                 />
               ))}
             </Stack>

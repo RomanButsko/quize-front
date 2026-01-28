@@ -1,3 +1,5 @@
+'use client';
+
 import { Box } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import { EditorHeader } from '@/widgets/header';
@@ -7,7 +9,8 @@ import { EditorPropertiesSidebar } from '@/widgets/editor-properties-sidebar';
 import { EditorDndContext } from '@/features/quiz-editor';
 import { BlockDraftProvider } from '@/features/quiz-block-properties';
 import { sx } from '@/shared/lib';
-import { HEADER_HEIGHT } from '@/shared/ui';
+import { FullPageError, FullPageLoader, HEADER_HEIGHT } from '@/shared/ui';
+import { useInitializeEditor } from '../model/use-initialize-editor';
 
 const styles = sx({
   root: {
@@ -48,7 +51,27 @@ const styles = sx({
   },
 });
 
-export const EditorLayout = () => {
+type EditorLayoutProps = {
+  quizId?: string;
+};
+
+export const EditorLayout = ({ quizId }: EditorLayoutProps) => {
+  const { isLoading, isError, error } = useInitializeEditor({ quizId });
+
+  if (isLoading) {
+    return <FullPageLoader sx={styles.root} />;
+  }
+
+  if (isError) {
+    return (
+      <FullPageError
+        error={error}
+        message='Failed to load quiz'
+        sx={styles.root}
+      />
+    );
+  }
+
   return (
     <Box sx={styles.root}>
       <EditorHeader />
