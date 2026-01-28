@@ -18,6 +18,7 @@ export const usePublishQuizMutation = () => {
     },
     onSuccess: (publishedQuiz) => {
       queryClient.setQueryData(quizKeys.detail(publishedQuiz.id), publishedQuiz);
+      queryClient.invalidateQueries({ queryKey: quizKeys.all });
     },
   });
 };
