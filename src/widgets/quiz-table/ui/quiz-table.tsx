@@ -122,7 +122,6 @@ export const QuizTable = () => {
                         variant='text'
                         component={Link}
                         href={paths.quizViewById(id)}
-                        disabled={!published}
                         color='secondary'
                         startIcon={<VisibilityIcon />}
                       >
