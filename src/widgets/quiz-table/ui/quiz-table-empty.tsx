@@ -11,8 +11,14 @@ const styles = sx({
 export const QuizTableEmpty = () => {
   return (
     <TableRow>
-      <TableCell colSpan={4} sx={styles.cell}>
-        <Typography variant='body1' color='text.secondary'>
+      <TableCell
+        colSpan={4}
+        sx={styles.cell}
+      >
+        <Typography
+          variant='body1'
+          color='text.secondary'
+        >
           No quizzes found
         </Typography>
       </TableCell>
