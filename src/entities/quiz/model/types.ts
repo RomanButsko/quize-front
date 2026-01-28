@@ -7,9 +7,9 @@ export type QuizListItem = {
   published: boolean;
 };
 
-/* eslint-ignore-next-line @typescript-eslint/no-empty-object-type */
+/* eslint-disable-next-line @typescript-eslint/no-empty-object-type */
 export interface QuizItemDto extends Quiz {}
-/* eslint-ignore-next-line @typescript-eslint/no-empty-object-type */
+/* eslint-disable-next-line @typescript-eslint/no-empty-object-type */
 export interface QuizListItemDto extends QuizListItem {}
 
 export type Quiz = {
