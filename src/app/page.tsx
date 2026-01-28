@@ -1,6 +1,11 @@
+import type { Metadata } from 'next';
 import { Box, Stack, Typography } from '@mui/material';
 import { QuizTable } from '@/widgets/quiz-table';
 import { sx } from '@/shared/lib';
+
+export const metadata: Metadata = {
+  title: 'Dashboard',
+};
 
 const styles = sx({
   root: {

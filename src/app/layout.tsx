@@ -15,8 +15,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Quize',
-  description: 'Quize',
+  title: {
+    template: '%s | Quize',
+    default: 'Quize',
+  },
+  description: 'Create and manage your quizzes',
 };
 
 export default function RootLayout({
