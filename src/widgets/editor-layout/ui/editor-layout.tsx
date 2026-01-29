@@ -27,26 +27,46 @@ const styles = sx({
   },
   left: {
     width: {
+      md: 220,
       lg: 260,
     },
     minHeight: {
       xs: 240,
-      lg: 'auto',
+      md: 'auto',
+    },
+  },
+  sidebarSticky: {
+    position: {
+      md: 'sticky',
+    },
+    top: {
+      md: HEADER_HEIGHT + 24,
+    },
+    maxHeight: {
+      md: `calc(100dvh - ${HEADER_HEIGHT}px)`,
+    },
+    overflowY: {
+      md: 'auto',
     },
   },
   canvas: {
     minHeight: {
       xs: 360,
-      lg: 'auto',
+      md: 'auto',
+    },
+    maxHeight: {
+      xs: 440,
+      md: '100%',
     },
   },
   right: {
     width: {
+      md: 220,
       lg: 300,
     },
     minHeight: {
       xs: 200,
-      lg: 'auto',
+      md: 'auto',
     },
   },
 });
@@ -83,23 +103,27 @@ export const EditorLayout = ({ quizId }: EditorLayoutProps) => {
         <BlockDraftProvider>
           <EditorDndContext>
             <Grid
-              size={{ xs: 12, lg: 'auto' }}
+              size={{ xs: 12, md: 'auto' }}
               sx={styles.left}
             >
-              <EditorLeftSidebar />
+              <Box sx={styles.sidebarSticky}>
+                <EditorLeftSidebar />
+              </Box>
             </Grid>
             <Grid
-              size={{ xs: 12, lg: 'grow' }}
+              size={{ xs: 12, md: 'grow' }}
               sx={styles.canvas}
             >
               <EditorCanvas />
             </Grid>
           </EditorDndContext>
           <Grid
-            size={{ xs: 12, lg: 'auto' }}
+            size={{ xs: 12, md: 'auto' }}
             sx={styles.right}
           >
-            <EditorPropertiesSidebar />
+            <Box sx={styles.sidebarSticky}>
+              <EditorPropertiesSidebar />
+            </Box>
           </Grid>
         </BlockDraftProvider>
       </Grid>

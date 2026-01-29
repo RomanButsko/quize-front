@@ -15,6 +15,10 @@ const styles = sx({
     border: '1px dashed',
     borderColor: 'divider',
     borderRadius: 2,
+    overflowY: {
+      xs: 'auto',
+      md: 'hidden',
+    },
   },
   blocks: {
     display: 'flex',

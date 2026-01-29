@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Button, type ButtonProps } from '@mui/material';
+import { Box, Button as MuiButton, Tooltip, type ButtonProps } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { sx } from '@/shared/lib';
 import { paths } from '@/shared/config';
@@ -9,6 +9,7 @@ import type { ButtonBlock as ButtonBlockType } from '../model/types';
 type ButtonBlockProps = {
   block: ButtonBlockType;
   buttonProps?: ButtonProps;
+  tooltipTitle?: string;
 };
 
 const styles = sx({
@@ -22,7 +23,7 @@ const styles = sx({
   },
 });
 
-export const ButtonBlock = ({ block, buttonProps }: ButtonBlockProps) => {
+export const ButtonBlock = ({ block, buttonProps, tooltipTitle }: ButtonBlockProps) => {
   const router = useRouter();
 
   const handleClick = () => {
@@ -33,16 +34,29 @@ export const ButtonBlock = ({ block, buttonProps }: ButtonBlockProps) => {
     }
   };
 
+  const Button = (
+    <MuiButton
+      variant={block.variant}
+      sx={styles.button}
+      onClick={handleClick}
+      {...buttonProps}
+    >
+      {block.label}
+    </MuiButton>
+  );
+
   return (
     <Box sx={[styles.root, { justifyContent: block.align ?? 'flex-start' }]}>
-      <Button
-        variant={block.variant}
-        sx={styles.button}
-        onClick={handleClick}
-        {...buttonProps}
-      >
-        {block.label}
-      </Button>
+      {tooltipTitle ? (
+        <Tooltip
+          title={tooltipTitle}
+          placement='right-start'
+        >
+          <span>{Button}</span>
+        </Tooltip>
+      ) : (
+        Button
+      )}
     </Box>
   );
 };

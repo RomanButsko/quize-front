@@ -2,7 +2,7 @@
 
 import type { ReactNode } from 'react';
 import { createContext, useContext, useId } from 'react';
-import { DndContext, DragOverlay } from '@dnd-kit/core';
+import { DndContext, DragOverlay, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { Box, Paper, Typography } from '@mui/material';
 import { useEditorDnd } from '@/features/quiz-editor/lib/dnd/use-editor-dnd';
@@ -52,6 +52,13 @@ export const EditorDndContext = ({ children }: EditorDndContextProps) => {
     handleDragCancel,
   } = dndState;
 
+  const pointerSensor = useSensor(PointerSensor, {
+    activationConstraint: {
+      distance: 5,
+    },
+  });
+  const sensors = useSensors(pointerSensor);
+
   const blocks = useAppSelector((state) => state.editor.blocks);
 
   const activeBlock = blocks.find((block) => block.id === activeId);
@@ -60,6 +67,7 @@ export const EditorDndContext = ({ children }: EditorDndContextProps) => {
   return (
     <DndContext
       id={id}
+      sensors={sensors}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
       onDragOver={handleDragOver}

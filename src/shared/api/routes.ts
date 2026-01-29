@@ -5,5 +5,6 @@ export const API_ROUTES = {
     create: () => '/quizzes',
     update: (id: string) => `/quizzes/${id}`,
     publish: (id: string) => `/quizzes/${id}/publish`,
+    unpublish: (id: string) => `/quizzes/${id}/unpublish`,
   },
 } as const;

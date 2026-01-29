@@ -28,3 +28,5 @@ export type CreateQuizPayload = {
 export type UpdateQuizPayload = Pick<Quiz, 'id' | 'title' | 'blocks'>;
 
 export type PublishQuizPayload = Pick<Quiz, 'id'>;
+
+export type UnpublishQuizPayload = Pick<Quiz, 'id'>;

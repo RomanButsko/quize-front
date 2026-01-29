@@ -24,13 +24,15 @@ export const useEditorActionsState = () => {
   const isButtonPresent = blocks.some((block) => block.type === 'button');
 
   const isSaveDisabled = !hasTitle || !hasBlocks || !isButtonPresent;
-  const isPublishDisabled = !quizId || published || isSaveDisabled;
+  const isPublishDisabled = !quizId || isSaveDisabled;
 
   return {
     quizId,
     title,
     blocks,
     published,
+    hasTitle,
+    isButtonPresent,
     isSaveDisabled,
     isPublishDisabled,
     updateTitle,

@@ -38,7 +38,11 @@ export const QuizRenderer = ({ quiz }: QuizRendererProps) => {
                 {renderQuizBlock(block, {
                   buttonProps: {
                     onClick: handleSubmit,
+                    disabled: !quiz.published,
                   },
+                  tooltipTitle: !quiz.published
+                    ? 'Quiz is not published, please publish it first to submit'
+                    : undefined,
                 })}
               </Box>
             );

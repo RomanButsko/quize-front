@@ -12,6 +12,9 @@ const styles = sx({
   helper: {
     color: 'text.secondary',
   },
+  toggleButtonGroup: {
+    flexDirection: { md: 'column', lg: 'row' },
+  },
 });
 
 type ButtonFieldsProps = {
@@ -48,6 +51,7 @@ export const ButtonFields = ({ block, onLabelChange, onVariantChange, onActionCh
           exclusive
           value={block.variant}
           onChange={onVariantChange}
+          sx={styles.toggleButtonGroup}
         >
           <ToggleButton value='contained'>Contained</ToggleButton>
           <ToggleButton value='outlined'>Outlined</ToggleButton>

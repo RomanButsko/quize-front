@@ -9,6 +9,7 @@ import { sx } from '@/shared/lib';
 
 const styles = sx({
   block: {
+    minHeight: '54px',
     position: 'relative',
     border: 1,
     borderColor: 'divider',

@@ -9,7 +9,6 @@ import { useAppDispatch, useAppSelector } from '@/shared/store/hooks';
 
 type BlockDraftStateContextValue = {
   draft: QuizBlock | null;
-  selectedBlock: QuizBlock | null;
 };
 
 type BlockDraftActionsContextValue = {
@@ -33,15 +32,23 @@ type BlockDraftProviderProps = {
   children: ReactNode;
 };
 
-type DraftStateProviderProps = {
-  children: ReactNode;
-  selectedBlock: QuizBlock | null;
-};
-
-const DraftStateProvider = ({ children, selectedBlock }: DraftStateProviderProps) => {
+export const BlockDraftProvider = ({ children }: BlockDraftProviderProps) => {
   const dispatch = useAppDispatch();
+  const blocks = useAppSelector((state) => state.editor.blocks);
+  const selectedBlockId = useAppSelector((state) => state.editor.selectedBlockId);
 
-  const [draft, setDraft] = useState<QuizBlock | null>(selectedBlock ? structuredClone(selectedBlock) : null);
+  const [draft, setDraft] = useState<QuizBlock | null>(null);
+  const [trackedBlockId, setTrackedBlockId] = useState<string | null>(null);
+
+  if (selectedBlockId !== trackedBlockId) {
+    setTrackedBlockId(selectedBlockId);
+    if (selectedBlockId) {
+      const block = blocks.find((b) => b.id === selectedBlockId);
+      setDraft(block ? structuredClone(block) : null);
+    } else {
+      setDraft(null);
+    }
+  }
 
   const updateDraft = (updater: (current: QuizBlock) => QuizBlock) => {
     setDraft((current) => (current ? updater(current) : current));
@@ -124,7 +131,6 @@ const DraftStateProvider = ({ children, selectedBlock }: DraftStateProviderProps
 
   const stateValue: BlockDraftStateContextValue = {
     draft,
-    selectedBlock,
   };
 
   const actionsValue: BlockDraftActionsContextValue = {
@@ -145,22 +151,6 @@ const DraftStateProvider = ({ children, selectedBlock }: DraftStateProviderProps
     <BlockDraftStateContext.Provider value={stateValue}>
       <BlockDraftActionsContext.Provider value={actionsValue}>{children}</BlockDraftActionsContext.Provider>
     </BlockDraftStateContext.Provider>
-  );
-};
-
-export const BlockDraftProvider = ({ children }: BlockDraftProviderProps) => {
-  const blocks = useAppSelector((state) => state.editor.blocks);
-  const selectedBlockId = useAppSelector((state) => state.editor.selectedBlockId);
-
-  const selectedBlock = selectedBlockId ? (blocks.find((block) => block.id === selectedBlockId) ?? null) : null;
-
-  return (
-    <DraftStateProvider
-      key={selectedBlockId ?? 'none'}
-      selectedBlock={selectedBlock}
-    >
-      {children}
-    </DraftStateProvider>
   );
 };
 

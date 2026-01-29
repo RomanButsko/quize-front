@@ -39,8 +39,9 @@ const styles = sx({
 });
 
 export const EditorHeader = () => {
-  const { title, isSaveDisabled, isPublishDisabled, updateTitle } = useEditorActionsState();
-  const { isSaving, isPublishing, handleSave, handlePublish } = useEditorMutations();
+  const { title, hasTitle, isButtonPresent, isSaveDisabled, isPublishDisabled, published, updateTitle } =
+    useEditorActionsState();
+  const { isSaving, isPublishing, isUnpublishing, handleSave, handlePublish, handleUnpublish } = useEditorMutations();
 
   return (
     <Box sx={styles.root}>
@@ -68,7 +69,10 @@ export const EditorHeader = () => {
           {isSaveDisabled && (
             <InfoTooltip
               title='To save, the following conditions must be met:'
-              items={['Title is required', 'At least one button is required in the quiz']}
+              items={[
+                ...(!hasTitle ? ['Title is required'] : []),
+                ...(!isButtonPresent ? ['At least one button is required in the quiz'] : []),
+              ]}
             />
           )}
           <Button
@@ -81,11 +85,11 @@ export const EditorHeader = () => {
           </Button>
           <Button
             variant='contained'
-            disabled={isPublishDisabled || isPublishing}
-            onClick={handlePublish}
-            loading={isPublishing}
+            disabled={isPublishDisabled || isPublishing || isUnpublishing}
+            onClick={published ? handleUnpublish : handlePublish}
+            loading={isPublishing || isUnpublishing}
           >
-            Publish
+            {published ? 'Unpublish' : 'Publish'}
           </Button>
         </Stack>
       </Stack>

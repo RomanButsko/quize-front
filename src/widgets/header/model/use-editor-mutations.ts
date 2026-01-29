@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useCreateQuizMutation } from '@/entities/quiz/api/create-quiz-mutation';
 import { useUpdateQuizMutation } from '@/entities/quiz/api/update-quiz-mutation';
 import { usePublishQuizMutation } from '@/entities/quiz/api/publish-quiz-mutation';
+import { useUnpublishQuizMutation } from '@/entities/quiz/api/unpublish-quiz-mutation';
 import { paths } from '@/shared/config';
 import { useEditorActionsState } from './use-editor-actions-state';
 
@@ -15,9 +16,11 @@ export const useEditorMutations = () => {
   const createQuizMutation = useCreateQuizMutation();
   const updateQuizMutation = useUpdateQuizMutation();
   const publishQuizMutation = usePublishQuizMutation();
+  const unpublishQuizMutation = useUnpublishQuizMutation();
 
   const isSaving = createQuizMutation.isPending || updateQuizMutation.isPending;
   const isPublishing = publishQuizMutation.isPending;
+  const isUnpublishing = unpublishQuizMutation.isPending;
 
   const handleSave = () => {
     if (quizId) {
@@ -47,10 +50,25 @@ export const useEditorMutations = () => {
     );
   };
 
+  const handleUnpublish = () => {
+    if (!quizId) return;
+
+    unpublishQuizMutation.mutate(
+      { id: quizId },
+      {
+        onSuccess: () => {
+          router.push(paths.dashboard);
+        },
+      }
+    );
+  };
+
   return {
     isSaving,
     isPublishing,
+    isUnpublishing,
     handleSave,
     handlePublish,
+    handleUnpublish,
   };
 };
