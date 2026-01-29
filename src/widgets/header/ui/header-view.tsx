@@ -70,61 +70,65 @@ export const HeaderView = ({ isDashboardActive, dashboardPath, createQuizPath }:
   const { isMobile } = useMobile();
 
   return (
-    <AppBar
-      position='static'
-      elevation={0}
-      sx={styles.appBar}
-    >
-      <Toolbar
-        disableGutters
-        sx={styles.toolbar}
+    <>
+      <AppBar
+        position='fixed'
+        elevation={0}
+        sx={styles.appBar}
       >
-        <Box
-          sx={styles.left}
-          onClick={() => router.push(dashboardPath)}
+        <Toolbar
+          disableGutters
+          sx={styles.toolbar}
         >
-          <Box sx={styles.logo}>
-            <Typography variant='subtitle2'>Q</Typography>
+          <Box
+            sx={styles.left}
+            onClick={() => router.push(dashboardPath)}
+          >
+            <Box sx={styles.logo}>
+              <Typography variant='subtitle2'>Q</Typography>
+            </Box>
+            {!isMobile && (
+              <Typography
+                variant='h6'
+                noWrap
+                sx={styles.brand}
+              >
+                QuizBuilder
+              </Typography>
+            )}
           </Box>
-          {!isMobile && (
-            <Typography
-              variant='h6'
-              noWrap
-              sx={styles.brand}
+
+          <Box sx={styles.center}>
+            <Button
+              component={Link}
+              href={dashboardPath}
+              sx={[styles.navButton, isDashboardActive && styles.navButtonActive]}
             >
-              QuizBuilder
-            </Typography>
+              Quiz Dashboard
+            </Button>
+          </Box>
+
+          {isMobile ? (
+            <IconButton
+              component={Link}
+              href={createQuizPath}
+            >
+              <CreateIcon color='primary' />
+            </IconButton>
+          ) : (
+            <Button
+              component={Link}
+              href={createQuizPath}
+              variant='contained'
+              sx={styles.primaryButton}
+            >
+              Create New Quiz
+            </Button>
           )}
-        </Box>
-
-        <Box sx={styles.center}>
-          <Button
-            component={Link}
-            href={dashboardPath}
-            sx={[styles.navButton, isDashboardActive && styles.navButtonActive]}
-          >
-            Quiz Dashboard
-          </Button>
-        </Box>
-
-        {isMobile ? (
-          <IconButton
-            component={Link}
-            href={createQuizPath}
-          >
-            <CreateIcon color='primary' />
-          </IconButton>
-        ) : (
-          <Button
-            component={Link}
-            href={createQuizPath}
-            variant='contained'
-            sx={styles.primaryButton}
-          >
-            Create New Quiz
-          </Button>
-        )}
-      </Toolbar>
-    </AppBar>
+        </Toolbar>
+      </AppBar>
+      {/* Spacer to offset content below fixed header */}
+      <Toolbar sx={styles.toolbar} />
+    </>
   );
 };

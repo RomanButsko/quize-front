@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import { sx } from '@/shared/lib';
-import type { QuestionBlock as QuestionBlockType, QuestionOption } from '../model/types';
+import { QUESTION_INPUT_TYPES, type QuestionBlock as QuestionBlockType, type QuestionOption } from '../model/types';
 import { hasOptions } from '../lib';
 
 type QuestionBlockProps = {
@@ -90,7 +90,7 @@ export const QuestionBlock = ({ block, radioGroupProps, formGroupProps, textFiel
           ))}
         </RadioGroup>
       )}
-      {block.input.type === 'checkbox' && (
+      {block.input.type === QUESTION_INPUT_TYPES.CHECKBOX && (
         <FormGroup {...formGroupProps}>
           {options.map((option) => (
             <FormControlLabel
@@ -102,7 +102,7 @@ export const QuestionBlock = ({ block, radioGroupProps, formGroupProps, textFiel
           ))}
         </FormGroup>
       )}
-      {block.input.type === 'text' && (
+      {block.input.type === QUESTION_INPUT_TYPES.TEXT && (
         <TextField
           placeholder={block.input.placeholder ?? 'Type your answer'}
           size='small'

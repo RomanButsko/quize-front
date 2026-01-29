@@ -1,20 +1,28 @@
-import { QuizBlock } from '@/entities/quiz-block/model/types';
+import {
+  QuizBlock,
+  BLOCK_TYPES,
+  QUESTION_INPUT_TYPES,
+  type BlockType,
+  type QuestionInputType,
+} from '@/entities/quiz-block/model/types';
 
-export const getBlockTitle = (block: QuizBlock) => {
-  if (block.type === 'heading') {
-    return 'Heading';
+const BLOCK_TYPE_TITLES: Record<BlockType, string> = {
+  [BLOCK_TYPES.HEADING]: 'Heading',
+  [BLOCK_TYPES.BUTTON]: 'Button',
+  [BLOCK_TYPES.FOOTER]: 'Footer',
+  [BLOCK_TYPES.QUESTION]: 'Question',
+};
+
+const QUESTION_INPUT_TITLES: Record<QuestionInputType, string> = {
+  [QUESTION_INPUT_TYPES.RADIO]: 'Question (Single choice)',
+  [QUESTION_INPUT_TYPES.CHECKBOX]: 'Question (Multiple choice)',
+  [QUESTION_INPUT_TYPES.TEXT]: 'Question (Text input)',
+};
+
+export const getBlockTitle = (block: QuizBlock): string => {
+  if (block.type === BLOCK_TYPES.QUESTION) {
+    return QUESTION_INPUT_TITLES[block.input.type];
   }
-  if (block.type === 'button') {
-    return 'Button';
-  }
-  if (block.type === 'footer') {
-    return 'Footer';
-  }
-  if (block.input.type === 'radio') {
-    return 'Question (Single choice)';
-  }
-  if (block.input.type === 'checkbox') {
-    return 'Question (Multiple choice)';
-  }
-  return 'Question (Text input)';
+
+  return BLOCK_TYPE_TITLES[block.type];
 };

@@ -1,4 +1,4 @@
-import type { QuizBlock } from '@/entities/quiz-block/model/types';
+import { BLOCK_TYPES, QUESTION_INPUT_TYPES, type QuizBlock } from '@/entities/quiz-block/model/types';
 
 export type BlockFactoryGroup = 'content' | 'questions';
 
@@ -14,12 +14,12 @@ export type BlockFactory = {
 export const blockFactories: BlockFactory[] = [
   {
     id: 'heading',
-    type: 'heading',
+    type: BLOCK_TYPES.HEADING,
     label: 'Heading',
     group: 'content',
     create: () => ({
       id: crypto.randomUUID(),
-      type: 'heading',
+      type: BLOCK_TYPES.HEADING,
       text: 'Section title',
       level: 'h2',
       align: 'left',
@@ -27,13 +27,13 @@ export const blockFactories: BlockFactory[] = [
   },
   {
     id: 'button',
-    type: 'button',
+    type: BLOCK_TYPES.BUTTON,
     label: 'Button',
     required: true,
     group: 'content',
     create: () => ({
       id: crypto.randomUUID(),
-      type: 'button',
+      type: BLOCK_TYPES.BUTTON,
       label: 'Continue',
       variant: 'contained',
       align: 'left',
@@ -42,19 +42,19 @@ export const blockFactories: BlockFactory[] = [
   },
   {
     id: 'footer',
-    type: 'footer',
+    type: BLOCK_TYPES.FOOTER,
     label: 'Footer',
     group: 'content',
     create: () => ({
       id: crypto.randomUUID(),
-      type: 'footer',
+      type: BLOCK_TYPES.FOOTER,
       text: 'Footer text',
       align: 'left',
     }),
   },
   {
     id: 'question-single',
-    type: 'question',
+    type: BLOCK_TYPES.QUESTION,
     label: 'Single Choice',
     group: 'questions',
     create: () => ({
@@ -63,7 +63,7 @@ export const blockFactories: BlockFactory[] = [
       question: 'Untitled question',
       required: false,
       input: {
-        type: 'radio',
+        type: QUESTION_INPUT_TYPES.RADIO,
         options: [
           { id: crypto.randomUUID(), label: 'Option 1' },
           { id: crypto.randomUUID(), label: 'Option 2' },
@@ -73,16 +73,16 @@ export const blockFactories: BlockFactory[] = [
   },
   {
     id: 'question-multiple',
-    type: 'question',
+    type: BLOCK_TYPES.QUESTION,
     label: 'Multiple Choice',
     group: 'questions',
     create: () => ({
       id: crypto.randomUUID(),
-      type: 'question',
+      type: BLOCK_TYPES.QUESTION,
       question: 'Untitled question',
       required: false,
       input: {
-        type: 'checkbox',
+        type: QUESTION_INPUT_TYPES.CHECKBOX,
         options: [
           { id: crypto.randomUUID(), label: 'Option 1' },
           { id: crypto.randomUUID(), label: 'Option 2' },
@@ -97,11 +97,11 @@ export const blockFactories: BlockFactory[] = [
     group: 'questions',
     create: () => ({
       id: crypto.randomUUID(),
-      type: 'question',
+      type: BLOCK_TYPES.QUESTION,
       question: 'Untitled question',
       required: false,
       input: {
-        type: 'text',
+        type: QUESTION_INPUT_TYPES.TEXT,
         placeholder: 'Type your answer',
       },
     }),

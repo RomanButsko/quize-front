@@ -10,10 +10,11 @@ import {
   QuestionFields,
   isBlockValid,
   getBlockTitle,
-  useBlockDraftContext,
   type FieldChangeEvent,
+  useBlockDraftActions,
+  useBlockDraftState,
 } from '@/features/quiz-block-properties';
-import type { ButtonBlock } from '@/entities/quiz-block/model/types';
+import { BLOCK_TYPES, type ButtonBlock } from '@/entities/quiz-block/model/types';
 import { sx } from '@/shared/lib';
 
 const styles = sx({
@@ -30,8 +31,8 @@ const styles = sx({
 });
 
 export const EditorPropertiesSidebar = () => {
+  const { draft } = useBlockDraftState();
   const {
-    draft,
     setHeadingText,
     setFooterText,
     setQuestionLabel,
@@ -43,7 +44,7 @@ export const EditorPropertiesSidebar = () => {
     setButtonAction,
     saveDraft,
     cancelDraft,
-  } = useBlockDraftContext();
+  } = useBlockDraftActions();
 
   const handleHeadingChange = (event: FieldChangeEvent) => {
     setHeadingText(event.target.value);
@@ -107,13 +108,13 @@ export const EditorPropertiesSidebar = () => {
           onClose={cancelDraft}
         />
         <Divider />
-        {draft.type === 'heading' && (
+        {draft.type === BLOCK_TYPES.HEADING && (
           <HeadingFields
             block={draft}
             onChange={handleHeadingChange}
           />
         )}
-        {draft.type === 'question' && (
+        {draft.type === BLOCK_TYPES.QUESTION && (
           <QuestionFields
             block={draft}
             onLabelChange={handleQuestionLabelChange}
@@ -122,7 +123,7 @@ export const EditorPropertiesSidebar = () => {
             onPlaceholderChange={handleQuestionPlaceholderChange}
           />
         )}
-        {draft.type === 'button' && (
+        {draft.type === BLOCK_TYPES.BUTTON && (
           <ButtonFields
             block={draft}
             onLabelChange={handleButtonLabelChange}
@@ -130,7 +131,7 @@ export const EditorPropertiesSidebar = () => {
             onActionChange={handleButtonActionChange}
           />
         )}
-        {draft.type === 'footer' && (
+        {draft.type === BLOCK_TYPES.FOOTER && (
           <FooterFields
             block={draft}
             onChange={handleFooterChange}

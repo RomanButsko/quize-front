@@ -2,14 +2,17 @@
 
 import { createContext, useContext, useState } from 'react';
 import type { ReactNode } from 'react';
-import type { QuizBlock } from '@/entities/quiz-block/model/types';
+import { BLOCK_TYPES, type QuizBlock } from '@/entities/quiz-block/model/types';
 import { hasOptions } from '@/entities/quiz-block/lib';
 import { selectBlock, updateBlock } from '@/shared/store';
 import { useAppDispatch, useAppSelector } from '@/shared/store/hooks';
 
-type BlockDraftContextValue = {
+type BlockDraftStateContextValue = {
   draft: QuizBlock | null;
   selectedBlock: QuizBlock | null;
+};
+
+type BlockDraftActionsContextValue = {
   setHeadingText: (text: string) => void;
   setFooterText: (text: string) => void;
   setQuestionLabel: (question: string) => void;
@@ -23,7 +26,8 @@ type BlockDraftContextValue = {
   cancelDraft: () => void;
 };
 
-const BlockDraftContext = createContext<BlockDraftContextValue | null>(null);
+const BlockDraftStateContext = createContext<BlockDraftStateContextValue | null>(null);
+const BlockDraftActionsContext = createContext<BlockDraftActionsContextValue | null>(null);
 
 type BlockDraftProviderProps = {
   children: ReactNode;
@@ -44,20 +48,20 @@ const DraftStateProvider = ({ children, selectedBlock }: DraftStateProviderProps
   };
 
   const setHeadingText = (text: string) => {
-    updateDraft((current) => (current.type === 'heading' ? { ...current, text } : current));
+    updateDraft((current) => (current.type === BLOCK_TYPES.HEADING ? { ...current, text } : current));
   };
 
   const setFooterText = (text: string) => {
-    updateDraft((current) => (current.type === 'footer' ? { ...current, text } : current));
+    updateDraft((current) => (current.type === BLOCK_TYPES.FOOTER ? { ...current, text } : current));
   };
 
   const setQuestionLabel = (question: string) => {
-    updateDraft((current) => (current.type === 'question' ? { ...current, question } : current));
+    updateDraft((current) => (current.type === BLOCK_TYPES.QUESTION ? { ...current, question } : current));
   };
 
   const addQuestionOption = () => {
     updateDraft((current) => {
-      if (current.type !== 'question' || !hasOptions(current.input)) {
+      if (current.type !== BLOCK_TYPES.QUESTION || !hasOptions(current.input)) {
         return current;
       }
       const newOption = { id: crypto.randomUUID(), label: '' };
@@ -73,7 +77,7 @@ const DraftStateProvider = ({ children, selectedBlock }: DraftStateProviderProps
 
   const setQuestionOptionLabel = (optionId: string, label: string) => {
     updateDraft((current) => {
-      if (current.type !== 'question' || !hasOptions(current.input)) {
+      if (current.type !== BLOCK_TYPES.QUESTION || !hasOptions(current.input)) {
         return current;
       }
       return {
@@ -88,20 +92,20 @@ const DraftStateProvider = ({ children, selectedBlock }: DraftStateProviderProps
 
   const setQuestionPlaceholder = (placeholder: string) => {
     updateDraft((current) =>
-      current.type === 'question' ? { ...current, input: { ...current.input, placeholder } } : current
+      current.type === BLOCK_TYPES.QUESTION ? { ...current, input: { ...current.input, placeholder } } : current
     );
   };
 
   const setButtonLabel = (label: string) => {
-    updateDraft((current) => (current.type === 'button' ? { ...current, label } : current));
+    updateDraft((current) => (current.type === BLOCK_TYPES.BUTTON ? { ...current, label } : current));
   };
 
   const setButtonVariant = (variant: 'contained' | 'outlined' | 'text') => {
-    updateDraft((current) => (current.type === 'button' ? { ...current, variant } : current));
+    updateDraft((current) => (current.type === BLOCK_TYPES.BUTTON ? { ...current, variant } : current));
   };
 
   const setButtonAction = (action: 'cancel' | 'submit') => {
-    updateDraft((current) => (current.type === 'button' ? { ...current, action } : current));
+    updateDraft((current) => (current.type === BLOCK_TYPES.BUTTON ? { ...current, action } : current));
   };
 
   const saveDraft = () => {
@@ -118,9 +122,12 @@ const DraftStateProvider = ({ children, selectedBlock }: DraftStateProviderProps
     setDraft(null);
   };
 
-  const value: BlockDraftContextValue = {
+  const stateValue: BlockDraftStateContextValue = {
     draft,
     selectedBlock,
+  };
+
+  const actionsValue: BlockDraftActionsContextValue = {
     setHeadingText,
     setFooterText,
     setQuestionLabel,
@@ -134,7 +141,11 @@ const DraftStateProvider = ({ children, selectedBlock }: DraftStateProviderProps
     cancelDraft,
   };
 
-  return <BlockDraftContext.Provider value={value}>{children}</BlockDraftContext.Provider>;
+  return (
+    <BlockDraftStateContext.Provider value={stateValue}>
+      <BlockDraftActionsContext.Provider value={actionsValue}>{children}</BlockDraftActionsContext.Provider>
+    </BlockDraftStateContext.Provider>
+  );
 };
 
 export const BlockDraftProvider = ({ children }: BlockDraftProviderProps) => {
@@ -153,10 +164,18 @@ export const BlockDraftProvider = ({ children }: BlockDraftProviderProps) => {
   );
 };
 
-export const useBlockDraftContext = () => {
-  const context = useContext(BlockDraftContext);
+export const useBlockDraftState = () => {
+  const context = useContext(BlockDraftStateContext);
   if (!context) {
-    throw new Error('useBlockDraftContext must be used within BlockDraftProvider');
+    throw new Error('useBlockDraftState must be used within BlockDraftProvider');
+  }
+  return context;
+};
+
+export const useBlockDraftActions = () => {
+  const context = useContext(BlockDraftActionsContext);
+  if (!context) {
+    throw new Error('useBlockDraftActions must be used within BlockDraftProvider');
   }
   return context;
 };

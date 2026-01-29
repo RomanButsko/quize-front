@@ -20,7 +20,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { useQuery } from '@tanstack/react-query';
 import { getQuizListQuery } from '@/entities/quiz';
 import { paths } from '@/shared/config';
-import { formatDateDayMonthYear, sx } from '@/shared/lib';
+import { formatDateDayMonthYearTime, sx } from '@/shared/lib';
 import { QuizTableEmpty } from './quiz-table-empty';
 
 const styles = sx({
@@ -73,10 +73,14 @@ export const QuizTable = () => {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell sx={styles.headCell}>Quiz Title</TableCell>
-            <TableCell sx={styles.headCell}>Last Updated</TableCell>
-            <TableCell sx={styles.headCell}>Status</TableCell>
-            <TableCell sx={styles.headCell}>Actions</TableCell>
+            {['Quiz Title', 'Last Updated', 'Status', 'Actions'].map((column) => (
+              <TableCell
+                key={column}
+                sx={styles.headCell}
+              >
+                {column}
+              </TableCell>
+            ))}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -97,7 +101,7 @@ export const QuizTable = () => {
                       {title}
                     </Typography>
                   </TableCell>
-                  <TableCell>{formatDateDayMonthYear(updatedAt)}</TableCell>
+                  <TableCell>{formatDateDayMonthYearTime(updatedAt)}</TableCell>
                   <TableCell>
                     <Chip
                       label={published ? 'Published' : 'Draft'}

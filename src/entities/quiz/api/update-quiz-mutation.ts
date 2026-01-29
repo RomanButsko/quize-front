@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiClient, API_ROUTES } from '@/shared/api';
+import { showSuccessToast, showErrorToast, getErrorMessage } from '@/shared/lib';
 import { quizKeys } from '../model/quiz-keys';
 import type { Quiz, UpdateQuizPayload } from '../model/types';
 
@@ -18,6 +19,10 @@ export const useUpdateQuizMutation = () => {
     },
     onSuccess: (updatedQuiz) => {
       queryClient.setQueryData(quizKeys.detail(updatedQuiz.id), updatedQuiz);
+      showSuccessToast('Quiz saved successfully');
+    },
+    onError: (error) => {
+      showErrorToast(getErrorMessage(error));
     },
   });
 };

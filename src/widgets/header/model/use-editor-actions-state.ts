@@ -31,7 +31,6 @@ export const useEditorActionsState = () => {
     title,
     blocks,
     published,
-    isButtonPresent,
     isSaveDisabled,
     isPublishDisabled,
     updateTitle,

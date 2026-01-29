@@ -1,7 +1,8 @@
 'use client';
 
-import { Box, Button, Stack, TextField, Tooltip, Typography } from '@mui/material';
+import { Box, Button, Stack, TextField, Typography } from '@mui/material';
 import { sx } from '@/shared/lib';
+import { InfoTooltip } from '@/shared/ui';
 import { useEditorActionsState } from '../model/use-editor-actions-state';
 import { useEditorMutations } from '../model/use-editor-mutations';
 
@@ -33,11 +34,12 @@ const styles = sx({
   actions: {
     gap: 1,
     flexWrap: 'wrap',
+    alignItems: 'center',
   },
 });
 
 export const EditorHeader = () => {
-  const { title, isSaveDisabled, isPublishDisabled, isButtonPresent, updateTitle } = useEditorActionsState();
+  const { title, isSaveDisabled, isPublishDisabled, updateTitle } = useEditorActionsState();
   const { isSaving, isPublishing, handleSave, handlePublish } = useEditorMutations();
 
   return (
@@ -63,18 +65,20 @@ export const EditorHeader = () => {
           direction='row'
           sx={styles.actions}
         >
-          <Tooltip title={!isButtonPresent ? 'Button is required for quiz' : ''}>
-            <span>
-              <Button
-                variant='outlined'
-                disabled={isSaveDisabled || isSaving}
-                onClick={handleSave}
-                loading={isSaving}
-              >
-                Save
-              </Button>
-            </span>
-          </Tooltip>
+          {isSaveDisabled && (
+            <InfoTooltip
+              title='To save, the following conditions must be met:'
+              items={['Title is required', 'At least one button is required in the quiz']}
+            />
+          )}
+          <Button
+            variant='outlined'
+            disabled={isSaveDisabled || isSaving}
+            onClick={handleSave}
+            loading={isSaving}
+          >
+            Save
+          </Button>
           <Button
             variant='contained'
             disabled={isPublishDisabled || isPublishing}

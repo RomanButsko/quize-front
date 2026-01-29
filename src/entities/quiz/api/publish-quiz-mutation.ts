@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiClient, API_ROUTES } from '@/shared/api';
+import { showSuccessToast, showErrorToast, getErrorMessage } from '@/shared/lib';
 import { quizKeys } from '../model/quiz-keys';
 import type { PublishQuizPayload, Quiz } from '../model/types';
 
@@ -19,6 +20,10 @@ export const usePublishQuizMutation = () => {
     onSuccess: (publishedQuiz) => {
       queryClient.setQueryData(quizKeys.detail(publishedQuiz.id), publishedQuiz);
       queryClient.invalidateQueries({ queryKey: quizKeys.all });
+      showSuccessToast('Quiz published successfully');
+    },
+    onError: (error) => {
+      showErrorToast(getErrorMessage(error));
     },
   });
 };
